@@ -115,8 +115,7 @@ def classify(document):
     proba = np.max(loaded_model.predict_proba(X))
     return label[int(y)], proba
 
-
-label, proba = classify(
-    '❤ ️ bánh_bao hông kong , bánh_bao xá_xíu , bánh_bao phô_mai ngon , trà sữa đều ngon và béo , thạch thì béo_béo dai dai ngonnnnn 😂 mà bánh_bao kim_sa với trà xanh làm thất_vọng quá nó bé xíu như nút chai , nhân ăn ko đúng kim_sa hay trà xanh 😂'
-)
-print(label)
+while (True):
+    label, proba = classify(str(input())
+    )
+    print(label, ',probability; ', proba)
