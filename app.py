@@ -3,6 +3,7 @@ import csv
 import os
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -27,12 +28,14 @@ def write_data_to_csv():
     train_dir_neg = './data_train/train/neg/'
     files = os.listdir(train_dir_neg)
     for file in files:
+        # 0 is negative
         temp = (str(open('./data_train/train/neg/' + str(file)).read()), 0)
         comments.append(temp)
 
     train_dir_pos = './data_train/train/neg/'
     files = os.listdir(train_dir_pos)
     for file in files:
+        # 1 is positive
         temp = (str(open('./data_train/train/pos/' + str(file)).read()), 1)
         comments.append(temp)
 
@@ -81,7 +84,20 @@ if loaded_model is None or loaded_vectorizer is None:
     processed = remove_special_char(comments)
 
     df = pd.DataFrame(comments, columns=['review', 'sentiment'])
+    print(df['sentiment'].value_counts())
+    # draw pie chart
+    labels = 'negative', 'positive'
+    sizes = [df['sentiment'].value_counts()['0'],
+             df['sentiment'].value_counts()['1']]
 
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    plt.show()
+
+    #training
     x_train = df.loc[:, 'review'].values
     y_train = df.loc[:, 'sentiment'].values
     # x_test = df.loc[(len(df) / 3 * 2):, 'review'].values
